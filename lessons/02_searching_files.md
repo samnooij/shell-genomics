@@ -21,7 +21,7 @@ utility for searching plain-text data sets for lines matching a string or regula
 Let's give it a try!
 
 Suppose we want to see how many reads in our file have really bad, with 10 consecutive Ns  
-Let's search for the string NNNNNNNNNN in file 
+Let's search for the string NNNNNNNNNN in file.
 
      grep NNNNNNNNNN SRR098026.fastq
 
@@ -42,7 +42,7 @@ for example:
 ****
 **Exercise**
 
-1) Search for the sequence GNATNACCACTTCC in SRR098026.fastq.
+1) Search for the sequence GNATNACCACTTCC in SRR098026.fastq.  
 In addition to finding the sequence, have your search also return
 the name of the sequence.
 
@@ -61,10 +61,10 @@ we're redirecting the output to the terminal (all the stuff that went
 whizzing by) to something else. In this case, we want to print it
 to a file, so that we can look at it later.
 
-The redirection command for putting something in a file is `>`
+The redirection command for putting something in a file is `>`.
 
 Let's try it out and put all the sequences that contain 'NNNNNNNNNN'
-from all the files in to another file called 'bad_reads.txt'
+from all the files in to another file called 'bad_reads.txt':
 
     grep -B1 -A2 NNNNNNNNNN SRR098026.fastq > bad_reads.txt
 
@@ -80,11 +80,12 @@ saving more than one search, for example:
 
 There's one more useful redirection command that we're going to show, and that's
 called the pipe command, and it is `|`. It's probably not a key on
-your keyboard you use very much. What `|` does is take the output that
-scrolling by on the terminal and then can run it through another command.
+your keyboard you use very much. What `|` does is take the output that is
+scrolling by on the terminal and then pass it on to another command.
 When it was all whizzing by before, we wished we could just slow it down and
-look at it, like we can with `less`. Well, it turns out that we can! We pipe
-the `grep` command through `less`:
+look at it, like we can with `less`. Well, it turns out that we can!
+
+We pipe the `grep` command through `less`:
 
     grep -B1 -A2 NNNNNNNNNN SRR098026.fastq | less
 
@@ -93,7 +94,7 @@ Now we can use the arrows to scroll up and down and use `q` to get out.
 We can also do something tricky and use the command `wc`. `wc` stands for
 `word count`. It counts the number of lines, words and characters. So, we 
 can use it to count the number of lines we're getting back from our `grep`
-command. And that will magically tell us how many sequences we're finding:
+command. And that will magically tell us how many sequences we're finding.
 
     grep -B1 -A2 NNNNNNNNNN SRR098026.fastq | wc
 
@@ -119,7 +120,7 @@ Finally, let's use the new tools in our kit and a few new ones to example our SR
     cd 
     cd dc_sample_data/
 
-Let's ask a few questions about the data
+Let's ask a few questions about the data.
 
 1) How many of the read libraries are paired-end?
 
@@ -130,7 +131,7 @@ First, what are the column headers?
 
 That's only the first line but it is a lot to take in.  'cut' is a program that will extract columns in tab-delimited
 files.  It is a very good command to know.  Let's look at just the first four columns in the header using the '|' redirect
-and 'cut'
+and 'cut':
 
     head -n 1 SraRunTable.txt | cut -f1-4
     BioSample_s InsertSize_l      LibraryLayout_s	Library_Name_s    
@@ -173,13 +174,13 @@ count the different categories.
    We can use if '-k' option for sort to specify which column to sort on.  Note that this does something
    similar to cut's '-f'.
 
-    sort -k3 SraRunTable.txt > SraRunTable_sorted_by_layout.txt
+       sort -k3 SraRunTable.txt > SraRunTable_sorted_by_layout.txt
 
 4) Extract only paired end records into a new file
    Do we know PAIRED only occurs in column 4?  WE know there are only two in the file, so let's check.
 
-    grep PAIRED SraRunTable.txt | wc -l
-    2
+       grep PAIRED SraRunTable.txt | wc -l
+       2
 
 OK, we are good to go.
 
