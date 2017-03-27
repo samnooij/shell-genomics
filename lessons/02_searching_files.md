@@ -170,17 +170,20 @@ count the different categories.
       2 PAIRED
      35 SINGLE 
 
-3) Sort the metadata file by PAIRED/SINGLE and save to a new file
-   We can use if '-k' option for sort to specify which column to sort on.  Note that this does something
-   similar to cut's '-f'.
+3) Sort the metadata file by PAIRED/SINGLE and save to a new file.
 
-       sort -k3 SraRunTable.txt > SraRunTable_sorted_by_layout.txt
 
-4) Extract only paired end records into a new file
-   Do we know PAIRED only occurs in column 4?  WE know there are only two in the file, so let's check.
+We can use if '-k' option for sort to specify which column to sort on.  Note that this does something
+similar to cut's '-f'.
 
-       grep PAIRED SraRunTable.txt | wc -l
-       2
+     sort -k3 SraRunTable.txt > SraRunTable_sorted_by_layout.txt
+
+4) Extract only paired end records into a new file.
+
+Do we know PAIRED only occurs in column 4?  We know there are only two in the file, so let's check.
+
+    grep PAIRED SraRunTable.txt | wc -l
+    2
 
 OK, we are good to go.
 
