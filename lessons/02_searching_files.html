@@ -29,58 +29,111 @@
 
 <h1 id="the-shell">The Shell</h1>
 <h2 id="searching-files">Searching files</h2>
-<p>We showed a little how to search within a file using <code>less</code>. We can also search within files without even opening them, using <code>grep</code>. Grep is a command-line utility for searching plain-text data sets for lines matching a string or regular expression. Let's give it a try!</p>
-<p>Suppose we want to see how many reads in our file have really bad, with 10 consecutive Ns<br />
-Let's search for the string NNNNNNNNNN in file</p>
-<pre><code> grep NNNNNNNNNN SRR098026.fastq</code></pre>
-<p>We get back a lot of lines. What is we want to see the whole fastq record for each of these read. We can use the '-B' argument for grep to return the matched line plus one before (-B 1) and two lines after (-A 2). Since each record is four lines and the last second is the sequence, this should give the whole record.</p>
-<pre><code>grep -B1 -A2 NNNNNNNNNN SRR098026.fastq</code></pre>
+<h2><a id="user-content-learning-objectives" class="anchor" href="#learning-objectives" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Learning objectives</h2>
+<ul>
+<li>Practice searching for characters or patterns in a text file using the <code>grep</code> command</li>
+<li>Learn about output redirection</li>
+<li>Explore how to use the pipe (<code>|</code>) character to chain together commands</li>
+</ul>
+<h2><a id="user-content-searching-files" class="anchor" href="#searching-files" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Searching files</h2>
+<p>We showed a little how to search within a file using <code>less</code>. We can also
+search within files without even opening them, using <code>grep</code>. Grep is a command-line
+utility for searching plain-text data sets for lines matching a string or regular expression.
+Let's give it a try!</p>
+<p>Suppose we want to see how many reads in our file have really bad, with 10 consecutive Ns<br>
+Let's search for the string NNNNNNNNNN in file.</p>
+<div class="highlight highlight-source-shell"><pre>$ grep NNNNNNNNNN SRR098026.fastq</pre></div>
+<p>We get back a lot of lines. We want to see the whole fastq record for each of these read.
+We can use the '-B' argument for grep to return the matched line plus one before (-B1) and two
+lines after (-A2). Since each record is four lines and the second is the sequence, this should
+give the whole record.</p>
+<div class="highlight highlight-source-shell"><pre>$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq</pre></div>
 <p>for example:</p>
 <pre><code>@SRR098026.177 HWUSI-EAS1599_1:2:1:1:2025 length=35
 CNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 +SRR098026.177 HWUSI-EAS1599_1:2:1:1:2025 length=35
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</code></pre>
-<hr />
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+</code></pre>
+<hr>
 <p><strong>Exercise</strong></p>
-<ol style="list-style-type: decimal">
-<li><p>Search for the sequence GNATNACCACTTCC in SRR098026.fastq. In addition to finding the sequence, have your search also return the name of the sequence.</p></li>
-<li><p>Search for that sequence in both fastq files. ****</p></li>
+<ol>
+<li>
+<p>Search for the sequence GNATNACCACTTCC in SRR098026.fastq.<br>
+In addition to finding the sequence, have your search also return
+the name of the sequence.</p>
+</li>
+<li>
+<p>Search for that sequence in both fastq files.</p>
+</li>
 </ol>
-<h2 id="redirection">Redirection</h2>
-<p>We're excited we have all these sequences that we care about that we just got from the FASTQ files. That is a really important motif that is going to help us answer our important question. But all those sequences just went whizzing by with grep. How can we capture them?</p>
-<p>We can do that with something called &quot;redirection&quot;. The idea is that we're redirecting the output to the terminal (all the stuff that went whizzing by) to something else. In this case, we want to print it to a file, so that we can look at it later.</p>
-<p>The redirection command for putting something in a file is <code>&gt;</code></p>
-<p>Let's try it out and put all the sequences that contain 'NNNNNNNNNN' from all the files in to another file called 'bad-reads.txt'</p>
-<pre><code>grep -B1 -A2 NNNNNNNNNN SRR098026.fastq &gt; bad_reads.txt</code></pre>
-<p>The prompt should sit there a little bit, and then it should look like nothing happened. But type <code>ls</code>. You should have a new file called bad_reads.txt. Take a look at it and see if it has what you think it should.</p>
-<p>If we use '&gt;&gt;', it will append to rather tha overwrite a file. This can be useful for saving more than one search, for example:</p>
-<pre><code>grep -B1 -A2 NNNNNNNNNN SRR098026.fastq &gt; bad_reads.txt
-grep -B1 -A2 NNNNNNNNNN SRR097977.fastq &gt;&gt; bad_reads.txt</code></pre>
-<p>There's one more useful redirection command that we're going to show, and that's called the pipe command, and it is <code>|</code>. It's probably not a key on your keyboard you use very much. What <code>|</code> does is take the output that scrolling by on the terminal and then can run it through another command. When it was all whizzing by before, we wished we could just slow it down and look at it, like we can with <code>less</code>. Well it turns out that we can! We pipe the <code>grep</code> command through <code>less</code></p>
-<pre><code>grep -B1 -A2 NNNNNNNNNN SRR098026.fastq | less</code></pre>
+<hr>
+<h2><a id="user-content-redirection" class="anchor" href="#redirection" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Redirection</h2>
+<p>We're excited we have all these sequences that we care about from the
+FASTQ files. That is a really important motif that is going to help us
+answer our important question. But all those sequences just went
+whizzing by with <code>grep</code>. How can we capture them?</p>
+<p>We can do that with something called "redirection". The idea is that
+we're redirecting the output to the terminal (all the stuff that went
+whizzing by) to something else. In this case, we want to print it
+to a file, so that we can look at it later.</p>
+<p>The redirection command for putting something in a file is <code>&gt;</code>.</p>
+<p>Let's try it out and put all the sequences that contain 'NNNNNNNNNN'
+from all the files in to another file called 'bad_reads.txt':</p>
+<div class="highlight highlight-source-shell"><pre>$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq <span class="pl-k">&gt;</span> bad_reads.txt</pre></div>
+<p>The prompt should sit there a little bit, and then it should look like nothing
+happened. But type <code>ls</code>. You should have a new file called bad_reads.txt. Take
+a look at it and see if it has what you think it should.</p>
+<p>If we use '&gt;&gt;', it will append to rather tha overwrite a file.  This can be useful for
+saving more than one search, for example:</p>
+<div class="highlight highlight-source-shell"><pre>$ grep -B1 -A2 NNNNNNNNNN SRR097977.fastq <span class="pl-k">&gt;&gt;</span> bad_reads.txt</pre></div>
+<p>There's one more useful redirection command that we're going to show, and that's
+called the pipe command, and it is <code>|</code>. It's probably not a key on
+your keyboard you use very much. What <code>|</code> does is take the output that is
+scrolling by on the terminal and then pass it on to another command.
+When it was all whizzing by before, we wished we could just slow it down and
+look at it, like we can with <code>less</code>. Well, it turns out that we can!</p>
+<p>We pipe the <code>grep</code> command through <code>less</code>:</p>
+<div class="highlight highlight-source-shell"><pre>$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq <span class="pl-k">|</span> less</pre></div>
 <p>Now we can use the arrows to scroll up and down and use <code>q</code> to get out.</p>
-<p>We can also do something tricky and use the command <code>wc</code>. <code>wc</code> stands for <code>word count</code>. It counts the number of lines or characters. So, we can use it to count the number of lines we're getting back from our <code>grep</code> command. And that will magically tell us how many sequences we're finding. We're</p>
-<pre><code>grep -B1 -A2 NNNNNNNNNN SRR098026.fastq | wc</code></pre>
-<p>That tells us the number of lines, words and characters in the file. If we just want the number of lines, we can use the <code>-l</code> flag for <code>lines</code>.</p>
-<pre><code>grep -B1 -A2 NNNNNNNNNN SRR098026.fastq | wc -l</code></pre>
-<p>Redirecting is not super intuitive, but it's really powerful for stringing together these different commands, so you can do whatever you need to do.</p>
-<p>The philosophy behind these command line programs is that none of them really do anything all that impressive. BUT when you start chaining them together, you can do some really powerful things really efficiently. If you want to be proficient at using the shell, you must learn to become proficient with the pipe and redirection operators: <code>|</code>, <code>&gt;</code>, <code>&gt;&gt;</code>.</p>
+<p>We can also do something tricky and use the command <code>wc</code>. <code>wc</code> stands for
+<code>word count</code>. It counts the number of lines, words and characters. So, we
+can use it to count the number of lines we're getting back from our <code>grep</code>
+command. And that will magically tell us how many sequences we're finding.</p>
+<div class="highlight highlight-source-shell"><pre>$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq <span class="pl-k">|</span> wc</pre></div>
+<p>That tells us the number of lines, words and characters in the file. If we
+just want the number of lines, we can use the <code>-l</code> flag for <code>lines</code>.</p>
+<div class="highlight highlight-source-shell"><pre>$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq <span class="pl-k">|</span> wc -l</pre></div>
+<p>Redirecting is not super intuitive, but it's really powerful for stringing
+together these different commands, so you can do whatever you need to do.</p>
+<p>The philosophy behind these command line programs is that none of them
+really do anything all that impressive. BUT when you start chaining
+them together, you can do some really powerful things really
+efficiently. If you want to be proficient at using the shell, you must
+learn to become proficient with the pipe and redirection operators:
+<code>|</code>, <code>&gt;</code>, <code>&gt;&gt;</code>.</p>
+<h2><a id="user-content-practicing-searching-and-redirection" class="anchor" href="#practicing-searching-and-redirection" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Practicing searching and redirection</h2>
 <p>Finally, let's use the new tools in our kit and a few new ones to example our SRA metadata file.</p>
-<pre><code>cd 
-cd dc_sample_data/</code></pre>
-<p>Let's ask a few questions about the data</p>
-<ol style="list-style-type: decimal">
-<li>How many of the read libraries are paired end?</li>
+<div class="highlight highlight-source-shell"><pre>$ <span class="pl-c1">cd</span> ../sra_metadata/
+$ ls</pre></div>
+<p>Take a look at the metadata file, <code>SraRunTable.txt</code>:</p>
+<div class="highlight highlight-source-shell"><pre>$ less SraRunTable.txt</pre></div>
+<p>Let's ask a few questions about the data.</p>
+<ol>
+<li>How many of the read libraries are paired-end?</li>
 </ol>
 <p>First, what are the column headers?</p>
-<pre><code>head -n 1 SraRunTable.txt
-BioSample_s InsertSize_l    LibraryLayout_s Library_Name_s  LoadDate_s  MBases_l    MBytes_l    ReleaseDate_s Run_s SRA_Sample_s Sample_Name_s Assay_Type_s AssemblyName_s BioProject_s Center_Name_s Consent_s Organism_Platform_s SRA_Study_s g1k_analysis_group_s g1k_pop_code_s source_s strain_s</code></pre>
-<p>That's only the first line but it is a lot to take in. 'cut' is a program that will extract columns in tab-delimited files. It is a very good command to know. Lets look at just the first four columns in the header using the '|' readirect and 'cut'</p>
-<pre><code>head -n 1 SraRunTable.txt | cut -f1-4
-BioSample_s InsertSize_l      LibraryLayout_s   Library_Name_s    </code></pre>
-<p>'-f1-4' means to cut the first four fields (columns). The LibraryLayout_s column looks promising. Let's look at some data for just that column.</p>
-<pre><code>cut -f3 SraRunTable.txt | head -n 10
-LibraryLayout_s
+<div class="highlight highlight-source-shell"><pre>$ head -n 1 SraRunTable.txt</pre></div>
+<pre><code>BioSample_s	InsertSize_l	LibraryLayout_s	Library_Name_s	LoadDate_s	MBases_l	MBytes_l	ReleaseDate_s Run_s SRA_Sample_s Sample_Name_s Assay_Type_s AssemblyName_s BioProject_s Center_Name_s Consent_s Organism_Platform_s SRA_Study_s g1k_analysis_group_s g1k_pop_code_s source_s strain_s
+</code></pre>
+<p>That's only the first line but it is a lot to take in.  'cut' is a program that will extract columns in tab-delimited
+files.  It is a very good command to know.  Let's look at just the first four columns in the header using the '|' redirect
+and 'cut':</p>
+<div class="highlight highlight-source-shell"><pre>$ head -n 1 SraRunTable.txt <span class="pl-k">|</span> cut -f1-4</pre></div>
+<pre><code>BioSample_s InsertSize_l      LibraryLayout_s	Library_Name_s    
+</code></pre>
+<p>'-f1-4' means to cut the first four fields (columns).  The LibraryLayout_s column looks promising.  Let's look at some data for just that column.</p>
+<div class="highlight highlight-source-shell"><pre>$ cut -f3 SraRunTable.txt <span class="pl-k">|</span> head -n 10</pre></div>
+<pre><code>LibraryLayout_s
 SINGLE
 SINGLE
 SINGLE
@@ -89,45 +142,80 @@ SINGLE
 SINGLE
 SINGLE
 SINGLE
-PAIRED</code></pre>
-<p>We can see that there are (at least) two categories, SINGLE and PAIRED. We want to search all entries in this column for just PAIRED and count the number of hits.</p>
-<pre><code>cut -f3 SraRunTable.txt | grep PAIRED | wc -l
-2</code></pre>
-<ol start="2" style="list-style-type: decimal">
+PAIRED
+</code></pre>
+<p>We can see that there are (at least) two categories, SINGLE and PAIRED.  We want to search all entries in this column
+for just PAIRED and count the number of hits.</p>
+<div class="highlight highlight-source-shell"><pre>$ cut -f3 SraRunTable.txt <span class="pl-k">|</span> grep PAIRED <span class="pl-k">|</span> wc -l</pre></div>
+<pre><code>2
+</code></pre>
+<ol start="2">
 <li>How many of each class of library layout are there?</li>
 </ol>
-<p>We can use some new tools 'sort' and 'uniq' to extract more information. For example, cut the third column, remove the header and sort the values. The '-v' option for greap means return all lines that DO NOT match.</p>
-<pre><code>cut -f3 SraRunTable.txt | grep -v LibraryLayout_s | sort</code></pre>
-<p>This returns a sorted list (too long to show here) of PAIRED and SINGLE values. Now we can use 'uniq' with the '-c' flag to count the different categories.</p>
-<pre><code>cut -f3 SraRunTable.txt | grep -v LibraryLayout_s | sort | uniq -c
-  2 PAIRED
- 35 SINGLE </code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li><p>Sort the metadata file by PAIRED/SINGLE and save to a new file We can use if '-k' option for sort to specify which column to sort on. Note that this does something similar to cut's '-f'.</p>
-<p>sort -k3 SraRunTable.txt &gt; SraRunTable_sorted_by_layout.txt</p></li>
-<li><p>Extract only paired end records into a new file Do we know PAIRED only occurs in column 4? WE know there are only two in the file, so let's check.</p>
-<p>grep PAIRED SraRunTable.txt | wc -l 2</p></li>
+<p>We can use some new tools 'sort' and 'uniq' to extract more information.  For example, cut the third column, remove the
+header and sort the values.  The '-v' option for grep means return all lines that DO NOT match.</p>
+<div class="highlight highlight-source-shell"><pre>$ cut -f3 SraRunTable.txt <span class="pl-k">|</span> grep -v LibraryLayout_s <span class="pl-k">|</span> sort</pre></div>
+<p>This returns a sorted list (too long to show here) of PAIRED and SINGLE values.  Now we can use 'uniq' with the '-c' flag to
+count the different categories.</p>
+<div class="highlight highlight-source-shell"><pre>$ cut -f3 SraRunTable.txt <span class="pl-k">|</span> grep -v LibraryLayout_s <span class="pl-k">|</span>	sort <span class="pl-k">|</span> uniq -c</pre></div>
+<pre><code>  2 PAIRED
+ 35 SINGLE 
+</code></pre>
+<ol start="3">
+<li>Sort the metadata file by PAIRED/SINGLE and save to a new file.</li>
 </ol>
+<p>We can use if '-k' option for sort to specify which column to sort on.  Note that this does something
+similar to cut's '-f'.</p>
+<div class="highlight highlight-source-shell"><pre>$ sort -k3 SraRunTable.txt <span class="pl-k">&gt;</span> SraRunTable_sorted_by_layout.txt</pre></div>
+<ol start="4">
+<li>Extract only paired end records into a new file.</li>
+</ol>
+<p>Do we know PAIRED only occurs in column 4?  We know there are only two in the file, so let's check.</p>
+<div class="highlight highlight-source-shell"><pre>$ grep PAIRED SraRunTable.txt <span class="pl-k">|</span> wc -l</pre></div>
+<pre><code>2
+</code></pre>
 <p>OK, we are good to go.</p>
-<pre><code>grep PAIRED SraRunTable.txt &gt; SraRunTable_only_paired_end.txt</code></pre>
-<hr />
+<div class="highlight highlight-source-shell"><pre>$ grep PAIRED SraRunTable.txt <span class="pl-k">&gt;</span> SraRunTable_only_paired_end.txt</pre></div>
+<hr>
 <p><strong>Final Exercise</strong></p>
-<ol style="list-style-type: decimal">
-<li><p>How many sample load dates are there?</p></li>
-<li><p>How many samples were loaded on each date</p></li>
-<li><p>Filter subsets into new files bases on load date ****</p></li>
+<ol>
+<li>
+<p>How many sample load dates are there?</p>
+</li>
+<li>
+<p>How many samples were loaded on each date?</p>
+</li>
+<li>
+<p>Filter subsets into new files bases on load date.</p>
+</li>
 </ol>
-<h2 id="where-can-i-learn-more-about-the-shell">Where can I learn more about the shell?</h2>
+<hr>
+<h2><a id="user-content-where-can-i-learn-more-about-the-shell" class="anchor" href="#where-can-i-learn-more-about-the-shell" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Where can I learn more about the shell?</h2>
 <ul>
 <li>Software Carpentry tutorial - <a href="http://software-carpentry.org/v4/shell/index.html">The Unix shell</a></li>
 <li>The shell handout - <a href="http://files.fosswire.com/2007/08/fwunixref.pdf">Command Reference</a></li>
 <li><a href="http://explainshell.com">explainshell.com</a></li>
-<li>http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html</li>
-<li>man bash</li>
-<li>Google - if you don't know how to do something, try Googling it. Other people have probably had the same question.</li>
-<li>Learn by doing. There's no real other way to learn this than by trying it out. Write your next paper in nano (really emacs or vi), open pdfs from the command line, automate something you don't really need to automate.</li>
+<li><a href="http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html">http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html</a></li>
+<li><code>man bash</code></li>
+<li>Google - if you don't know how to do something, try Googling it. Other people
+have probably had the same question.</li>
+<li>Learn by doing. There's no real other way to learn this than by trying it
+out.  Write your next paper in nano (really emacs or vi), open pdfs from
+the command line, automate something you don't really need to automate.</li>
 </ul>
-<h2 id="bonus">Bonus:</h2>
+<h2><a id="user-content-more-on-working-with-tabular-data-in-the-shell" class="anchor" href="#more-on-working-with-tabular-data-in-the-shell" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>More on working with tabular data in the shell</h2>
+<p>If you want to learn more about searching on and manipulating tabular data, consider learning about two common tools:</p>
+<p><strong>awk</strong></p>
+<ul>
+<li><a href="http://www.grymoire.com/Unix/Awk.html">Intro to Awk</a></li>
+<li>A very comprehensive guide: <a href="https://www.gnu.org/software/gawk/manual/gawk.html">GNU awk or 'gawk'</a></li>
+</ul>
+<p><strong>sed</strong></p>
+<ul>
+<li>Sed <a href="http://www.thegeekstuff.com/tag/sed-tips-and-tricks/">Tips and Tricks</a></li>
+<li>Comprehensive <a href="https://www.gnu.org/software/sed/manual/sed.html">sed manual</a></li>
+</ul>
+<h2><a id="user-content-bonus" class="anchor" href="#bonus" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Bonus:</h2>
 <p><strong>backtick, xargs</strong>: Example find all files with certain text</p>
 <p><strong>alias</strong> -&gt; rm -i</p>
 <p><strong>variables</strong> -&gt; use a path example</p>
@@ -138,6 +226,8 @@ PAIRED</code></pre>
 <p><strong>Regular Expressions</strong></p>
 <p><strong>Permissions</strong></p>
 <p><strong>Chaining commands together</strong></p>
+<p><strong>md5sum</strong></p>
+</article>
+  </div>
 
-</div>
 </div>
