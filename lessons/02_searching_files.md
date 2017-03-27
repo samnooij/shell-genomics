@@ -25,9 +25,9 @@ Let's search for the string NNNNNNNNNN in file
 
      grep NNNNNNNNNN SRR098026.fastq
 
-We get back a lot of lines.  What is we want to see the whole fastq record for each of these read.
-We can use the '-B' argument for grep to return the matched line plus one before (-B 1) and two
-lines after (-A 2). Since each record is four lines and the last second is the sequence, this should
+We get back a lot of lines. We want to see the whole fastq record for each of these read.
+We can use the '-B' argument for grep to return the matched line plus one before (-B1) and two
+lines after (-A2). Since each record is four lines and the second is the sequence, this should
 give the whole record.
 
     grep -B1 -A2 NNNNNNNNNN SRR098026.fastq
@@ -51,10 +51,10 @@ the name of the sequence.
 
 ## Redirection
 
-We're excited we have all these sequences that we care about that we
-just got from the FASTQ files. That is a really important motif
-that is going to help us answer our important question. But all those
-sequences just went whizzing by with grep. How can we capture them?
+We're excited we have all these sequences that we care about from the 
+FASTQ files. That is a really important motif that is going to help us
+answer our important question. But all those sequences just went 
+whizzing by with `grep`. How can we capture them?
 
 We can do that with something called "redirection". The idea is that
 we're redirecting the output to the terminal (all the stuff that went
@@ -83,17 +83,17 @@ called the pipe command, and it is `|`. It's probably not a key on
 your keyboard you use very much. What `|` does is take the output that
 scrolling by on the terminal and then can run it through another command.
 When it was all whizzing by before, we wished we could just slow it down and
-look at it, like we can with `less`. Well it turns out that we can! We pipe
-the `grep` command through `less`
+look at it, like we can with `less`. Well, it turns out that we can! We pipe
+the `grep` command through `less`:
 
     grep -B1 -A2 NNNNNNNNNN SRR098026.fastq | less
 
 Now we can use the arrows to scroll up and down and use `q` to get out.
 
 We can also do something tricky and use the command `wc`. `wc` stands for
-`word count`. It counts the number of lines or characters. So, we can use
-it to count the number of lines we're getting back from our `grep` command.
-And that will magically tell us how many sequences we're finding. We're
+`word count`. It counts the number of lines, words and characters. So, we 
+can use it to count the number of lines we're getting back from our `grep`
+command. And that will magically tell us how many sequences we're finding:
 
     grep -B1 -A2 NNNNNNNNNN SRR098026.fastq | wc
 
@@ -121,7 +121,7 @@ Finally, let's use the new tools in our kit and a few new ones to example our SR
 
 Let's ask a few questions about the data
 
-1) How many of the read libraries are paired end?
+1) How many of the read libraries are paired-end?
 
 First, what are the column headers?
 
@@ -129,7 +129,7 @@ First, what are the column headers?
     BioSample_s	InsertSize_l	LibraryLayout_s	Library_Name_s	LoadDate_s	MBases_l	MBytes_l	ReleaseDate_s Run_s SRA_Sample_s Sample_Name_s Assay_Type_s AssemblyName_s BioProject_s Center_Name_s Consent_s Organism_Platform_s SRA_Study_s g1k_analysis_group_s g1k_pop_code_s source_s strain_s
 
 That's only the first line but it is a lot to take in.  'cut' is a program that will extract columns in tab-delimited
-files.  It is a very good command to know.  Lets look at just the first four columns in the header using the '|' readirect
+files.  It is a very good command to know.  Let's look at just the first four columns in the header using the '|' redirect
 and 'cut'
 
     head -n 1 SraRunTable.txt | cut -f1-4
@@ -158,7 +158,7 @@ for just PAIRED and count the number of hits.
 2) How many of each class of library layout are there?
 
 We can use some new tools 'sort' and 'uniq' to extract more information.  For example, cut the third column, remove the
-header and sort the values.  The '-v' option for greap means return all lines that DO NOT match.
+header and sort the values.  The '-v' option for grep means return all lines that DO NOT match.
 
     cut -f3 SraRunTable.txt | grep -v LibraryLayout_s | sort
     
@@ -191,9 +191,9 @@ OK, we are good to go.
 
 1) How many sample load dates are there?
 
-2) How many samples were loaded on each date
+2) How many samples were loaded on each date?
 
-3) Filter subsets into new files bases on load date
+3) Filter subsets into new files bases on load date.
 ****
 
  
@@ -205,7 +205,7 @@ OK, we are good to go.
 - The shell handout - [Command Reference](http://files.fosswire.com/2007/08/fwunixref.pdf)
 - [explainshell.com](http://explainshell.com)
 - http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html
-- man bash
+- `man bash`
 - Google - if you don't know how to do something, try Googling it. Other people
 have probably had the same question.
 - Learn by doing. There's no real other way to learn this than by trying it
