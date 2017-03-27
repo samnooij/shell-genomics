@@ -1,7 +1,7 @@
 <html>
   <head>
 
-    <title>The Shell</title>
+    <title>Searching files in the Shell</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico" />
     <link href="../css/bootstrap/bootstrap.css" rel="stylesheet" />
@@ -25,21 +25,29 @@
           <img alt="Data Carpentry banner" src="../img/DC1_logo_small.png" height="50px" />
         </a>
       </div>
-      <div class="span10 offset1">
+      
+<div class="row-fluid">
+        <div class="span10 offset1">
+	  <!-- start content -->
 
-<h1 id="the-shell">The Shell</h1>
+<h1 id="the-shell">Searching files in the Shell</h1>
+          
 <h2 id="searching-files">Searching files</h2>
+          
 <h2><a id="user-content-learning-objectives" class="anchor" href="#learning-objectives" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Learning objectives</h2>
 <ul>
 <li>Practice searching for characters or patterns in a text file using the <code>grep</code> command</li>
 <li>Learn about output redirection</li>
 <li>Explore how to use the pipe (<code>|</code>) character to chain together commands</li>
 </ul>
+          
 <h2><a id="user-content-searching-files" class="anchor" href="#searching-files" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Searching files</h2>
+
 <p>We showed a little how to search within a file using <code>less</code>. We can also
 search within files without even opening them, using <code>grep</code>. Grep is a command-line
 utility for searching plain-text data sets for lines matching a string or regular expression.
 Let's give it a try!</p>
+          
 <p>Suppose we want to see how many reads in our file have really bad, with 10 consecutive Ns<br>
 Let's search for the string NNNNNNNNNN in file.</p>
 <div class="highlight highlight-source-shell"><pre>$ grep NNNNNNNNNN SRR098026.fastq</pre></div>
@@ -55,34 +63,38 @@ CNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 </code></pre>
 <hr>
+          
 <p><strong>Exercise</strong></p>
-<ol>
-<li>
+          
 <p>Search for the sequence GNATNACCACTTCC in SRR098026.fastq.<br>
 In addition to finding the sequence, have your search also return
 the name of the sequence.</p>
-</li>
-<li>
+
 <p>Search for that sequence in both fastq files.</p>
-</li>
-</ol>
+
 <hr>
+          
 <h2><a id="user-content-redirection" class="anchor" href="#redirection" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Redirection</h2>
+          
 <p>We're excited we have all these sequences that we care about from the
 FASTQ files. That is a really important motif that is going to help us
 answer our important question. But all those sequences just went
 whizzing by with <code>grep</code>. How can we capture them?</p>
+          
 <p>We can do that with something called "redirection". The idea is that
 we're redirecting the output to the terminal (all the stuff that went
 whizzing by) to something else. In this case, we want to print it
 to a file, so that we can look at it later.</p>
+          
 <p>The redirection command for putting something in a file is <code>&gt;</code>.</p>
+          
 <p>Let's try it out and put all the sequences that contain 'NNNNNNNNNN'
 from all the files in to another file called 'bad_reads.txt':</p>
 <div class="highlight highlight-source-shell"><pre>$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq <span class="pl-k">&gt;</span> bad_reads.txt</pre></div>
 <p>The prompt should sit there a little bit, and then it should look like nothing
 happened. But type <code>ls</code>. You should have a new file called bad_reads.txt. Take
 a look at it and see if it has what you think it should.</p>
+          
 <p>If we use '&gt;&gt;', it will append to rather tha overwrite a file.  This can be useful for
 saving more than one search, for example:</p>
 <div class="highlight highlight-source-shell"><pre>$ grep -B1 -A2 NNNNNNNNNN SRR097977.fastq <span class="pl-k">&gt;&gt;</span> bad_reads.txt</pre></div>
@@ -95,6 +107,7 @@ look at it, like we can with <code>less</code>. Well, it turns out that we can!<
 <p>We pipe the <code>grep</code> command through <code>less</code>:</p>
 <div class="highlight highlight-source-shell"><pre>$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq <span class="pl-k">|</span> less</pre></div>
 <p>Now we can use the arrows to scroll up and down and use <code>q</code> to get out.</p>
+          
 <p>We can also do something tricky and use the command <code>wc</code>. <code>wc</code> stands for
 <code>word count</code>. It counts the number of lines, words and characters. So, we
 can use it to count the number of lines we're getting back from our <code>grep</code>
@@ -105,22 +118,25 @@ just want the number of lines, we can use the <code>-l</code> flag for <code>lin
 <div class="highlight highlight-source-shell"><pre>$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq <span class="pl-k">|</span> wc -l</pre></div>
 <p>Redirecting is not super intuitive, but it's really powerful for stringing
 together these different commands, so you can do whatever you need to do.</p>
+          
 <p>The philosophy behind these command line programs is that none of them
 really do anything all that impressive. BUT when you start chaining
 them together, you can do some really powerful things really
 efficiently. If you want to be proficient at using the shell, you must
 learn to become proficient with the pipe and redirection operators:
 <code>|</code>, <code>&gt;</code>, <code>&gt;&gt;</code>.</p>
+          
 <h2><a id="user-content-practicing-searching-and-redirection" class="anchor" href="#practicing-searching-and-redirection" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Practicing searching and redirection</h2>
+
 <p>Finally, let's use the new tools in our kit and a few new ones to example our SRA metadata file.</p>
 <div class="highlight highlight-source-shell"><pre>$ <span class="pl-c1">cd</span> ../sra_metadata/
 $ ls</pre></div>
 <p>Take a look at the metadata file, <code>SraRunTable.txt</code>:</p>
 <div class="highlight highlight-source-shell"><pre>$ less SraRunTable.txt</pre></div>
 <p>Let's ask a few questions about the data.</p>
-<ol>
+
 <li>How many of the read libraries are paired-end?</li>
-</ol>
+
 <p>First, what are the column headers?</p>
 <div class="highlight highlight-source-shell"><pre>$ head -n 1 SraRunTable.txt</pre></div>
 <pre><code>BioSample_s	InsertSize_l	LibraryLayout_s	Library_Name_s	LoadDate_s	MBases_l	MBytes_l	ReleaseDate_s Run_s SRA_Sample_s Sample_Name_s Assay_Type_s AssemblyName_s BioProject_s Center_Name_s Consent_s Organism_Platform_s SRA_Study_s g1k_analysis_group_s g1k_pop_code_s source_s strain_s
@@ -149,6 +165,7 @@ for just PAIRED and count the number of hits.</p>
 <div class="highlight highlight-source-shell"><pre>$ cut -f3 SraRunTable.txt <span class="pl-k">|</span> grep PAIRED <span class="pl-k">|</span> wc -l</pre></div>
 <pre><code>2
 </code></pre>
+          
 <ol start="2">
 <li>How many of each class of library layout are there?</li>
 </ol>
@@ -177,6 +194,7 @@ similar to cut's '-f'.</p>
 <p>OK, we are good to go.</p>
 <div class="highlight highlight-source-shell"><pre>$ grep PAIRED SraRunTable.txt <span class="pl-k">&gt;</span> SraRunTable_only_paired_end.txt</pre></div>
 <hr>
+          
 <p><strong>Final Exercise</strong></p>
 <ol>
 <li>
@@ -227,7 +245,29 @@ the command line, automate something you don't really need to automate.</li>
 <p><strong>Permissions</strong></p>
 <p><strong>Chaining commands together</strong></p>
 <p><strong>md5sum</strong></p>
-</article>
+
   </div>
 
 </div>
+
+      <!-- end content -->
+	</div>
+      
+      <div class="footer">
+  <a class="label swc-blue-bg" href="">Facebook</a>
+  <a class="label swc-blue-bg" href="">Google+</a>
+  <a class="label swc-blue-bg" href="">Twitter</a>
+  <a class="label swc-blue-bg" href="">GitHub</a>
+  <a class="label swc-blue-bg" href="./LICENSE.html">License</a>
+  <a class="bugreport label swc-blue-bg" href="mailto:?subject=bug%20in%20lessons/03_searching_files.md">Bug Report</a>
+</div>
+
+    
+    <!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="./js/jquery-1.9.1.min.js"></script>
+<script src="./js/bootstrap/bootstrap.min.js"></script>
+
+  </body>
+</html>
